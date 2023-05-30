@@ -29,8 +29,7 @@ public class SearchJsonPathException  extends RuntimeException {
 	public static final String EXCEPTION_CODE_3 = "searchJsonPath-003"; // error applying json path over json
 	
 
-	@SuppressWarnings("rawtypes")
-	public static final ExceptionHandler handleSearchJsonPathException = (Exception exception, Request request, Response response) -> {
+	public static final ExceptionHandler<Exception> handleSearchJsonPathException = (Exception exception, Request request, Response response) -> {
 		response.type(Utils.MIME_JSON);
 		response.status(400);
 		response.header(Utils.HEADER_CONTENT_TYPE, Utils.MIME_DIRECTORY_ERROR);

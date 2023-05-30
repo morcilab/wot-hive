@@ -76,7 +76,8 @@ public class JsonPathController{
 		return result;
 	}
 
-	private static Boolean validList(List<String> list) {
+	@SuppressWarnings("unused")
+    private static Boolean validList(List<String> list) {
     		return list!=null && !list.isEmpty();
     }
 

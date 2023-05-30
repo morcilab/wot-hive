@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>es.upm.fi.oeg</groupId>
@@ -7,9 +8,11 @@
 	<name>Directory for the Web of Things</name>
 
 	<properties>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.release>17</maven.compiler.release>
+		<jena.version>4.1.0</jena.version>
+		<sane.version>1.16-SNAPSHOT</sane.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -27,6 +30,12 @@
 			<organization>Universidad Politécnica de Madrid, Ontology Engineering Group</organization>
 			<organizationUrl>https://www.oeg-upm.net/</organizationUrl>
 		</developer>
+		<developer>
+			<name>Davide Rossi</name>
+			<email>daviderossi@unibo.it</email>
+			<organization>University of Bologna, Department of Computer Science and Engineering</organization>
+			<organizationUrl>https://www.unibo.it/</organizationUrl>
+		</developer>
 	</developers>
 
 	<dependencies>
@@ -36,145 +45,190 @@
 			<version>2.9.3</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.javatuples</groupId>
-		    <artifactId>javatuples</artifactId>
-		    <version>1.2</version>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.14</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.jena</groupId>
+			<artifactId>jena-fuseki-main</artifactId>
+			<version>${jena.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>city.sane.wot-servient</groupId>
+			<artifactId>wot-servient</artifactId>
+			<version>${sane.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>city.sane.wot-servient</groupId>
+			<artifactId>wot-servient-binding-http</artifactId>
+			<version>${sane.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>city.sane.wot-servient</groupId>
+			<artifactId>wot-servient-binding-mqtt</artifactId>
+			<version>${sane.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.typesafe</groupId>
+			<artifactId>config</artifactId>
+			<version>1.4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.javatuples</groupId>
+			<artifactId>javatuples</artifactId>
+			<version>1.2</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
 		<dependency>
-		    <groupId>com.google.code.gson</groupId>
-		    <artifactId>gson</artifactId>
-		    <version>2.8.9</version>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.9</version>
 		</dependency>
-				
+
 		<!-- Json Patch -->
 		<dependency>
-		    <groupId>com.github.java-json-tools</groupId>
-		    <artifactId>json-patch</artifactId>
-		    <version>1.13</version>
+			<groupId>com.github.java-json-tools</groupId>
+			<artifactId>json-patch</artifactId>
+			<version>1.13</version>
 		</dependency>
 		<!-- Json path filter -->
 		<dependency>
-		    <groupId>com.jayway.jsonpath</groupId>
-		    <artifactId>json-path</artifactId>
-		    <version>2.6.0</version>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+			<version>2.6.0</version>
 		</dependency>
 		<!-- Time formatter -->
 		<dependency>
-		  <groupId>joda-time</groupId>
-		  <artifactId>joda-time</artifactId>
-		  <version>2.10.10</version>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.10.10</version>
 		</dependency>
-					
+
 		<!-- SSE events -->
 		<!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-eventsource-servlet -->
 		<dependency>
-		    <groupId>org.eclipse.jetty</groupId>
-		    <artifactId>jetty-eventsource-servlet</artifactId>
-		    <version>1.0.0</version>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-eventsource-servlet</artifactId>
+			<version>1.0.0</version>
 		</dependency>
 		<dependency>
-		    <groupId>info.macias</groupId>
-		    <artifactId>jeasse-servlet3</artifactId>
-		    <version>0.11.3</version>
+			<groupId>info.macias</groupId>
+			<artifactId>jeasse-servlet3</artifactId>
+			<version>0.11.3</version>
 		</dependency>
-		
+
 		<dependency>
-	        <groupId>org.slf4j</groupId>
-	        <artifactId>slf4j-log4j12</artifactId>
-	        <version>1.7.25</version>
-	    </dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.25</version>
+		</dependency>
 		<dependency>
-	        <groupId>log4j</groupId>
-	        <artifactId>log4j</artifactId>
-	        <version>1.2.17</version>
-	    </dependency>
-					
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+
 		<!-- Titanium -->
 		<dependency>
-		    <groupId>com.apicatalog</groupId>
-		    <artifactId>titanium-json-ld</artifactId>
-		    <version>1.2.0</version>
+			<groupId>com.apicatalog</groupId>
+			<artifactId>titanium-json-ld</artifactId>
+			<version>1.2.0</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.glassfish</groupId>
-		    <artifactId>jakarta.json</artifactId>
-		    <version>2.0.1</version>
+			<groupId>org.glassfish</groupId>
+			<artifactId>jakarta.json</artifactId>
+			<version>2.0.1</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.jena/jena-arq -->
 		<dependency>
-		    <groupId>org.apache.jena</groupId>
-		    <artifactId>jena-arq</artifactId>
-		    <version>4.2.0</version>
+			<groupId>org.apache.jena</groupId>
+			<artifactId>jena-arq</artifactId>
+			<version>${jena.version}</version>
 		</dependency>
 		<!-- Json schema -->
 		<dependency>
-		    <groupId>com.github.everit-org.json-schema</groupId>
-		    <artifactId>org.everit.json.schema</artifactId>
-		    <version>1.12.3</version>
+			<groupId>com.github.everit-org.json-schema</groupId>
+			<artifactId>org.everit.json.schema</artifactId>
+			<version>1.12.3</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.jena/jena-shacl -->
 		<dependency>
-		    <groupId>org.apache.jena</groupId>
-		    <artifactId>jena-shacl</artifactId>
-		    <version>4.3.2</version>
+			<groupId>org.apache.jena</groupId>
+			<artifactId>jena-shacl</artifactId>
+			<version>${jena.version}</version>
 		</dependency>
-				
+
 	</dependencies>
-	
-	 <repositories>
-	    <repository>
-	        <id>jitpack.io</id>
-	        <url>https://jitpack.io</url>
-	    </repository>
+
+	<repositories>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
 	</repositories>
-  
-	
-	
-	
+
+
+
+
 	<build>
-     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>3.2.4</version>
-        <executions>
-        <execution>
-            <phase>package</phase>
-            <!--<phase /><!- - Switch off -->
-            <goals>
-                <goal>shade</goal>
-            </goals>
-        </execution>
-    </executions>
-        <configuration>
-        <shadedArtifactAttached>false</shadedArtifactAttached>
-        <transformers>
-            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                <mainClass>directory.Directory</mainClass>
-            </transformer>
-            <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
-            <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer" />
-            <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer">
-                <addHeader>false</addHeader>
-            </transformer>
-        </transformers>
-        <filters>
-            <filter>
-                <artifact>wot-hive</artifact>
-                <excludes>
-                    <!-- Some jars are signed but shading breaks that.
-                         Don't include signing files.
-                    -->
-                    <exclude>META-INF/*.SF</exclude>
-                    <exclude>META-INF/*.DSA</exclude>
-                    <exclude>META-INF/*.RSA</exclude>
-                </excludes>
-            </filter>
-        </filters>
-    </configuration>
-      </plugin>
-    </plugins>
-  </build>
-	
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.2.0</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration></configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!--plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.2.4</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<shadedArtifactAttached>false</shadedArtifactAttached>
+					<transformers>
+						<transformer
+							implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+							<mainClass>directory.Directory</mainClass>
+						</transformer>
+						<transformer
+							implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+						<transformer
+							implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer" />
+						<transformer
+							implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer">
+							<addHeader>false</addHeader>
+						</transformer>
+					</transformers>
+					<filters>
+						<filter>
+							<artifact>wot-hive</artifact>
+							<excludes>
+								<exclude>META-INF/*.SF</exclude>
+								<exclude>META-INF/*.DSA</exclude>
+								<exclude>META-INF/*.RSA</exclude>
+							</excludes>
+						</filter>
+					</filters>
+				</configuration>
+			</plugin-->
+		</plugins>
+	</build>
+
 </project>

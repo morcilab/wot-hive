@@ -89,9 +89,7 @@ public class ThingValidationException  extends RuntimeException {
 	public static final String EXCEPTION_CODE_SEM_3 = "validation-semantic-003"; // error handling thing, check syntax
 	public static final String EXCEPTION_CODE_SYN_3 = "validation-syntactic-003"; // error handling thing, check syntax
 	
-
-	@SuppressWarnings("rawtypes")
-	public static final ExceptionHandler handleException = (Exception exception, Request request, Response response) -> {
+	public static final ExceptionHandler<Exception> handleException = (Exception exception, Request request, Response response) -> {
 		response.type(Utils.MIME_JSON);
 		response.status(400);
 		response.header(Utils.HEADER_CONTENT_TYPE, Utils.MIME_DIRECTORY_ERROR);

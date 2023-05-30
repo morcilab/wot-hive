@@ -17,8 +17,7 @@ public class ThingException extends RuntimeException{
 		super(msg);
 	}
 	
-	@SuppressWarnings("rawtypes")
-	public static final ExceptionHandler handleThingRegistrationException = (Exception exception, Request request, Response response) -> {
+	public static final ExceptionHandler<Exception> handleThingRegistrationException = (Exception exception, Request request, Response response) -> {
 		response.type(Utils.MIME_JSON);
 		response.status(400);
 		response.header(Utils.HEADER_CONTENT_TYPE, Utils.MIME_DIRECTORY_ERROR);

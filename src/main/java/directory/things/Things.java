@@ -14,6 +14,8 @@ import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.apicatalog.jsonld.JsonLd;
 import com.apicatalog.jsonld.JsonLdError;
@@ -36,7 +38,7 @@ import directory.exceptions.ThingException;
 
 public class Things {
 	
-	
+    public static final Logger LOGGER = LoggerFactory.getLogger(Directory.class);
 	public static String TDD_RAW_CONTEXT = "https://raw.githubusercontent.com/oeg-upm/wot-hive/AndreaCimminoArriaga-tdd-context/tdd.jsonld";
 	
 	protected static String inject(JsonObject json, String key, String injection) {
@@ -52,6 +54,7 @@ public class Things {
 	}
 	
 	protected static void cleanThingType(JsonObject td) {
+	    LOGGER.warn("from: "+td.toString());
 		if(td.has("@type")) {
 			if( td.get("@type") instanceof JsonPrimitive) {
 				td.remove("@type");
@@ -62,6 +65,7 @@ public class Things {
 				td.add("@type", array);
 			}
 		}
+        LOGGER.warn("to: "+td.toString());
 	}
 	
 	protected static Boolean hasThingType(JsonObject td) {
@@ -106,11 +110,18 @@ public class Things {
 	}
 	
 	public static Model toModel(JsonObject td) {
-		Model model = ModelFactory.createDefaultModel();
-		toRDF(td).toList()
-			.parallelStream()
-				.forEach(elem -> model.add(toTriple(elem)));
-		return model;
+	    LOGGER.info("toModel called");
+	    try {
+    		Model model = ModelFactory.createDefaultModel();
+    		toRDF(td).toList().
+    		    stream().
+//    			.parallelStream()
+    			forEach(elem -> model.add(toTriple(elem)));
+            return model;
+	    } catch(Exception e) {
+	        LOGGER.warn("toModel failed", e);
+	        throw e;
+	    }
 	}
 	
 	private static RdfDataset toRDF(JsonObject jsonld11) {
@@ -122,6 +133,7 @@ public class Things {
 			
 			return JsonLd.toRdf(jsonDocument).options(options).get();
 		} catch (JsonLdError | URISyntaxException e) {
+		    LOGGER.warn("toRDF got exception", e);
 			throw new ThingException("Error translating JSON-LD 1.1 into RDF");
 		}
 	}

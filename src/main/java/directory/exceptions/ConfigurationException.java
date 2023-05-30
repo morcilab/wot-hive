@@ -43,11 +43,7 @@ public class ConfigurationException extends RuntimeException {
 	public static final String EXCEPTION_CODE_2 = "configuration-002"; // missing mandatory key
 	public static final String EXCEPTION_CODE_3 = "configuration-003"; // unknown error
 
-	
-
-	
-	@SuppressWarnings("rawtypes")
-	public static final ExceptionHandler handleConfigurationException = (Exception exception, Request request, Response response) -> {
+	public static final ExceptionHandler<Exception> handleConfigurationException = (Exception exception, Request request, Response response) -> {
 		response.type(Utils.MIME_JSON);
 		response.status(400);
 		response.header(Utils.HEADER_CONTENT_TYPE, Utils.MIME_DIRECTORY_ERROR);

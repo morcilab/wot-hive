@@ -13,6 +13,8 @@ import java.util.Map.Entry;
 import java.util.Optional;
 
 import org.apache.jena.riot.RDFFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,8 +30,8 @@ import spark.Response;
 
 
 public class Utils {
-
-	public static boolean InjectRegistrationInfo = false;
+    public static final Logger LOGGER = LoggerFactory.getLogger(Utils.class);
+	public static boolean InjectRegistrationInfo = true;
 	
 	// -- Attributes
 	public static final Map<String,RDFFormat> WOT_TD_MYMES = new HashMap<>();
@@ -48,21 +50,23 @@ public class Utils {
 	public static final String MIME_DIRECTORY_ERROR = "application/problem+json";
 	protected static final String DIRECTORY_VERSION = "WoTHive/0.2.2";
 	protected static final String WOT_DIRECTORY_LOGO = "\n"+
-			"██╗    ██╗ ██████╗ ████████╗\n" + 
-			"██║    ██║██╔═══██╗╚══██╔══╝\n" + 
-			"██║ █╗ ██║██║   ██║   ██║   \n" + 
-			"██║███╗██║██║   ██║   ██║   \n" + 
-			"╚███╔███╔╝╚██████╔╝   ██║   \n" + 
-			" ╚══╝╚══╝  ╚═════╝    ╚═╝   \n" + 
-			"                            \n" + 
-			"██╗  ██╗██╗██╗   ██╗███████╗\n" + 
-			"██║  ██║██║██║   ██║██╔════╝\n" + 
-			"███████║██║██║   ██║█████╗  \n" + 
-			"██╔══██║██║╚██╗ ██╔╝██╔══╝  \n" + 
-			"██║  ██║██║ ╚████╔╝ ███████╗\n" + 
-			"╚═╝  ╚═╝╚═╝  ╚═══╝  ╚══════╝\n" + 
-			"\t© Ontology Engineering Group at Universidad Politectnica de Madrid\n"+
-			"\tAuthor: Andrea Cimmino\n";
+	    "WOT HIVE+\n" +
+//			"██╗    ██╗ ██████╗ ████████╗\n" + 
+//			"██║    ██║██╔═══██╗╚══██╔══╝\n" + 
+//			"██║ █╗ ██║██║   ██║   ██║   \n" + 
+//			"██║███╗██║██║   ██║   ██║   \n" + 
+//			"╚███╔███╔╝╚██████╔╝   ██║   \n" + 
+//			" ╚══╝╚══╝  ╚═════╝    ╚═╝   \n" + 
+//			"                            \n" + 
+//			"██╗  ██╗██╗██╗   ██╗███████╗\n" + 
+//			"██║  ██║██║██║   ██║██╔════╝\n" + 
+//			"███████║██║██║   ██║█████╗  \n" + 
+//			"██╔══██║██║╚██╗ ██╔╝██╔══╝  \n" + 
+//			"██║  ██║██║ ╚████╔╝ ███████╗\n" + 
+//			"╚═╝  ╚═╝╚═╝  ╚═══╝  ╚══════╝\n" + 
+		"\t© Ontology Engineering Group at Universidad Politectnica de Madrid\n"+
+		"\tAuthor: Andrea Cimmino\n"+
+        "\t© Davide Rossi\n";
 
 	
 	
@@ -156,12 +160,14 @@ public class Utils {
 		}	
 	}
 	
-	@SuppressWarnings("rawtypes")
-	protected static final ExceptionHandler handleException = (Exception exception, Request request, Response response) -> {
+	protected static final ExceptionHandler<Exception> handleException = (Exception exception, Request request, Response response) -> {
+	    LOGGER.warn("Request processing failed", exception);
 		response.type(Utils.MIME_JSON);
 		response.status(400);
 		response.header(Utils.HEADER_CONTENT_TYPE, Utils.MIME_DIRECTORY_ERROR);
+		
 		response.body(Utils.createErrorMessage("WOT-DIR-R", "Unknown exception", exception.toString()));
+		
 	};
 
 	
