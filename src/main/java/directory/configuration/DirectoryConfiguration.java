@@ -71,9 +71,10 @@ public class DirectoryConfiguration extends AbstractConfiguration {
     private static final String DEFAULT_TRIPLESTORE_ENDPOINT = "http://localhost:3030/sparql";
 
     public DirectoryConfiguration createDefault() {
+    	
         try {
             this.triplestore = new TriplestoreConfiguration(DEFAULT_TRIPLESTORE_ENDPOINT, DEFAULT_TRIPLESTORE_ENDPOINT);
-            this.service = new ServiceConfiguration("https://oeg.fi.upm.es/wothive/", 9000, 200, 2, 30000, 100, "./events.json");
+            this.service = new ServiceConfiguration(Directory.BASE_URI, 9000, 200, 2, 30000, 100, "./events.json");
             this.validation = new ValidationConfiguration(false, true, "./schema.json", "./shape.ttl");
             this.embeddedTriplestore = true;
         } catch(Exception e) {
@@ -92,13 +93,13 @@ public class DirectoryConfiguration extends AbstractConfiguration {
             throw new ConfigurationException(ConfigurationException.EXCEPTION_CODE_3, e.toString());
         }
         if(body == null)
-            throw new ConfigurationException(ConfigurationException.EXCEPTION_CODE_1, "A valid JSON configuration must be provided. For example: {\"triplestore\":{\"updateEnpoint\":\"http://localhost:3030/sparql\",\"queryEnpoint\":\"http://localhost:3030/sparql\",\"queryUsingGET\":true},\"service\":{\"directoryURIBase\":\"https://oeg.fi.upm.es/wothive/\",\"port\":8080,\"maxThreads\":200,\"minThreads\":2,\"timeOutMillis\":30000},\"validation\":{\"enableShaclValidation\":true,\"enableJsonSchemaValidation\":true,\"schemaFile\":\"./schema.json\",\"shapesFile\":\"./shape.ttl\"}}");
+            throw new ConfigurationException(ConfigurationException.EXCEPTION_CODE_1, "A valid JSON configuration must be provided. For example: {\"triplestore\":{\"updateEnpoint\":\"http://localhost:3030/sparql\",\"queryEnpoint\":\"http://localhost:3030/sparql\",\"queryUsingGET\":true},\"service\":{\"directoryURIBase\":\""+Directory.BASE_URI+",\"port\":8080,\"maxThreads\":200,\"minThreads\":2,\"timeOutMillis\":30000},\"validation\":{\"enableShaclValidation\":true,\"enableJsonSchemaValidation\":true,\"schemaFile\":\"./schema.json\",\"shapesFile\":\"./shape.ttl\"}}");
 
         // Validates configuration payload and nested JSONs
         validatePayload(body, "triplestore", ConfigurationException.EXCEPTION_CODE_2, "Provided JSON lacks of mandatory key \"triplestore\" with a triplestore configuration json. For instance'{\"updateEnpoint\":\"http://localhost:3030/sparql\",\"queryEnpoint\":\"http://localhost:3030/sparql\",\"queryUsingGET\":true}'");
         TriplestoreConfiguration.serialiseFromJson(body.get("triplestore").getAsJsonObject().toString());
 
-        validatePayload(body, "service", ConfigurationException.EXCEPTION_CODE_2, "Provided JSON lacks of mandatory key \"service\" with a service configuration json. For instance '{\"directoryURIBase\":\"https://oeg.fi.upm.es/wothive/\",\"port\":8080,\"maxThreads\":200,\"minThreads\":2,\"timeOutMillis\":30000}'");
+        validatePayload(body, "service", ConfigurationException.EXCEPTION_CODE_2, "Provided JSON lacks of mandatory key \"service\" with a service configuration json. For instance '{\"directoryURIBase\":\""+Directory.BASE_URI+",\"port\":8080,\"maxThreads\":200,\"minThreads\":2,\"timeOutMillis\":30000}'");
         ServiceConfiguration.serialiseFromJson(body.get("service").getAsJsonObject().toString());
 
         validatePayload(body, "validation", ConfigurationException.EXCEPTION_CODE_2, "Provided JSON lacks of mandatory key \"validation\" with a validation configuration json. For instance '{\"enableShaclValidation\":true,\"enableJsonSchemaValidation\":true,\"schemaFile\":\"./schema.json\",\"shapesFile\":\"./shape.ttl\"}'");

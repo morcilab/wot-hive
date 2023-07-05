@@ -3,6 +3,7 @@ package directory.configuration;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import directory.Directory;
 import directory.exceptions.ConfigurationException;
 
 public class ServiceConfiguration extends AbstractConfiguration{
@@ -101,7 +102,7 @@ public class ServiceConfiguration extends AbstractConfiguration{
 			throw new ConfigurationException(ConfigurationException.EXCEPTION_CODE_3, e.toString());
 		}
 		if (body==null)
-			throw new ConfigurationException(ConfigurationException.EXCEPTION_CODE_1, "A valid JSON configuration must be provided containing the following mandatory keys: \"directoryURIBase\",  \"port\", \"maxThreads\", \"minThreads\", and \"timeOutMillis\". For instance '{\"directoryURIBase\":\"https://oeg.fi.upm.es/wothive/\",\"port\":8080,\"maxThreads\":200,\"minThreads\":2,\"timeOutMillis\":30000}'");	
+			throw new ConfigurationException(ConfigurationException.EXCEPTION_CODE_1, "A valid JSON configuration must be provided containing the following mandatory keys: \"directoryURIBase\",  \"port\", \"maxThreads\", \"minThreads\", and \"timeOutMillis\". For instance '{\"directoryURIBase\":\""+Directory.BASE_URI+",\"port\":8080,\"maxThreads\":200,\"minThreads\":2,\"timeOutMillis\":30000}'");	
 		//  
 		validatePayload( body, "directoryURIBase", ConfigurationException.EXCEPTION_CODE_2, "Provided JSON lacks of mandatory key \"directoryURIBase\" used as base URI for the Thing Descriptions");
 		validatePayload( body, "port", ConfigurationException.EXCEPTION_CODE_2, "Provided JSON lacks of mandatory key \"port\" indicating the port where this service runs");

@@ -51,6 +51,7 @@ import spark.Response;
 import spark.Route;
 
 public class Directory {
+	public static final String BASE_URI = "http://directory.wot.net.morcilab/";
 
     // -- Attributes
     protected static DirectoryConfiguration configuration;

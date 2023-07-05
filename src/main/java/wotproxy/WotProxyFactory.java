@@ -23,6 +23,10 @@ import city.sane.wot.thing.security.NoSecurityScheme;
 public class WotProxyFactory {
 	private static final Logger LOG = Logger.getLogger(WotProxyFactory.class.getName());
 
+	public static ExposedThing createProxyAndExpose(String td, String id, Wot wot) throws InterruptedException, ExecutionException, WotException {
+		return createBalancingProxyAndExpose(td, id, wot, true);
+	}
+
 	/**
 	 * Creates a proxy for the given Thing Description.
 	 * The proxy supports all the protocol supported by the provided servient.
@@ -30,18 +34,17 @@ public class WotProxyFactory {
 	 * 
 	 * @param td the thing description
 	 * @param id the id of the proxy
-	 * @param wot the servient that hosts the proxy        exposedProxy.setSecurity(List.of("nosec_sc"));
-        exposedProxy.setSecurityDefinitions(Map.of("nosec_sc", new NoSecurityScheme()));
-
+	 * @param wot the servient that hosts the proxy
+	 *
 	 * @return
 	 * @throws InterruptedException
 	 * @throws ExecutionException
 	 * @throws WotException
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static ExposedThing createProxyAndExpose(String td, String id, Wot wot) throws InterruptedException, ExecutionException, WotException {
+	public static ExposedThing createProxyAndExpose(String td, String id, Wot wot, boolean forwardBehaviors) throws InterruptedException, ExecutionException, WotException {
 		//consume the thing
-        Thing thing = Thing.fromJson(td);
+	    	Thing thing = Thing.fromJson(td);
 		ConsumedThing consumedThing = wot.consume(thing);
 
 		//create a proxy
@@ -51,7 +54,7 @@ public class WotProxyFactory {
 	        .setDescription("Proxy for: " + consumedThing.getDescription())
 	        .setSecurity(List.of("nosec_sc"))
 	        .setSecurityDefinitions(Map.of("nosec_sc", new NoSecurityScheme()))
-            .setObjectContext(new Context("https://www.w3.org/2019/wot/td/v1"))
+	        .setObjectContext(new Context("https://www.w3.org/2019/wot/td/v1"))
 	        .build();
 
 		ExposedThing exposedProxy = wot.produce(proxyThing);
@@ -128,4 +131,9 @@ public class WotProxyFactory {
 		
 		return exposedProxy;
 	}
+	
+	public static ExposedThing createBalancingProxyAndExpose(String td, String id, Wot wot, boolean forwardBehaviors) throws InterruptedException, ExecutionException, WotException {
+		return null;
+	}
+
 }

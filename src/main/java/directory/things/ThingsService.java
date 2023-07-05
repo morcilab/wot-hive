@@ -183,7 +183,7 @@ public class ThingsService {
     }
 
     protected static final void createThing(JsonObject td, String id) {
-        createThing(td, id, true);
+        createThing(td, id, false);
     }
 
     protected static final void createThing(JsonObject td, String id, boolean createProxy) {
@@ -202,7 +202,7 @@ public class ThingsService {
         // Store + event
         String query = Utils.buildMessage("\nINSERT DATA { GRAPH <", graphId, "> { ", Things.printModel(thing, "NT"), "} ", managementQuery, " }");
         SparqlController.getSparql().update(query);
-        // TODO: create proxy
+        // Create proxy
         if(createProxy) {
             try {
                 String proxyId = id+"-proxy";
